@@ -478,6 +478,16 @@
               <FileType>5</FileType>
               <FilePath>.\SNTP.h</FilePath>
             </File>
+            <File>
+              <FileName>LowPower.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\LowPower.c</FilePath>
+            </File>
+            <File>
+              <FileName>LowPower.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\LowPower.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1088,6 +1098,16 @@
               <FileName>SNTP.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SNTP.h</FilePath>
+            </File>
+            <File>
+              <FileName>LowPower.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\LowPower.c</FilePath>
+            </File>
+            <File>
+              <FileName>LowPower.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\LowPower.h</FilePath>
             </File>
           </Files>
         </Group>
