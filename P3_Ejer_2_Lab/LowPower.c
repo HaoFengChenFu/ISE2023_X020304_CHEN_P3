@@ -1,10 +1,15 @@
 #include "LowPower.h"
 
+/****************************************
+			id del Thread
+****************************************/
+osThreadId_t tid_ThLowPower;  
 
 RTC_HandleTypeDef RTCHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 static void SYSCLKConfig_STOP(void);
+void LowPower_Thread (void *argument); 
 
 /**
   * @brief  This function configures the system to enter Sleep mode for
@@ -50,22 +55,22 @@ void SleepMode_Measure(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Pin = GPIO_PIN_All;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct); 
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct); 
-  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
-  HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct); 
-  HAL_GPIO_Init(GPIOK, &GPIO_InitStruct);
+  //HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  //HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+//  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+//  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+//  HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+//  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+//  HAL_GPIO_Init(GPIOH, &GPIO_InitStruct); 
+//  HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
+//  HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct); 
+//  HAL_GPIO_Init(GPIOK, &GPIO_InitStruct);
 
   /* Disable GPIOs clock */
   __HAL_RCC_GPIOA_CLK_DISABLE();
-  __HAL_RCC_GPIOB_CLK_DISABLE();
-  __HAL_RCC_GPIOC_CLK_DISABLE();
-  __HAL_RCC_GPIOD_CLK_DISABLE();
+  //__HAL_RCC_GPIOB_CLK_DISABLE();
+  //__HAL_RCC_GPIOC_CLK_DISABLE();
+  //__HAL_RCC_GPIOD_CLK_DISABLE();
   __HAL_RCC_GPIOE_CLK_DISABLE();
   __HAL_RCC_GPIOF_CLK_DISABLE();
   __HAL_RCC_GPIOG_CLK_DISABLE();
@@ -90,11 +95,6 @@ void SleepMode_Measure(void)
   /* Exit Ethernet Phy from LowPower mode */
   //ETH_PhyExitFromPowerDownMode();
 }
-
-
-
-
-
 
 static void SYSCLKConfig_STOP(void)
 {
@@ -127,3 +127,29 @@ static void SYSCLKConfig_STOP(void)
   }
 }
 
+int Init_ThLowPower(void) {
+  tid_ThLowPower = osThreadNew(LowPower_Thread, NULL, NULL);
+  if (tid_ThLowPower == NULL) {
+    return(-1);
+  }
+	
+  return(0);
+}
+
+/**************************************************************************************
+			Thread donde se pone el timer virtual para que se lance cada 3 minutos
+***************************************************************************************/
+void LowPower_Thread(void *argument) 
+{
+	osDelay(15000);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
+	SleepMode_Measure();
+	
+	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == 0){
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+		osDelay(100);
+	}
+	
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+}

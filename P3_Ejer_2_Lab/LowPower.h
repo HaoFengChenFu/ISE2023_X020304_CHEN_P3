@@ -11,4 +11,6 @@
 	#define RTC_ASYNCH_PREDIV 127
 	#define RTC_SYNCH_PREDIV 255
 	
+	int Init_ThLowPower(void);
+		
 #endif

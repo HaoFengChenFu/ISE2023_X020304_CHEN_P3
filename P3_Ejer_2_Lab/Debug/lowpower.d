@@ -41,3 +41,4 @@
 .\debug\lowpower.o: C:\Users\fengc\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\debug\lowpower.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\debug\lowpower.o: C:\Users\fengc\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\RTOS2\Include\cmsis_os2.h
+.\debug\lowpower.o: main.h

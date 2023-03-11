@@ -46,7 +46,7 @@
 #include "Parpadeo.h"
 #include "joystick.h"
 #include "SNTP.h"
-
+#include "LowPower.h"
 
 
 
@@ -138,7 +138,7 @@ int main(void)
 	osThreadNew(rtc_app, NULL, NULL);
 	Init_Parpadeo();
 	Init_ThSNTP();
-	
+	Init_ThLowPower();
 	
   /* Start thread execution */
   osKernelStart();

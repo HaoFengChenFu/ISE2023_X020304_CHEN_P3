@@ -56,3 +56,4 @@
 .\debug\main.o: rtc.h
 .\debug\main.o: joystick.h
 .\debug\main.o: joystick.h
+.\debug\main.o: LowPower.h
