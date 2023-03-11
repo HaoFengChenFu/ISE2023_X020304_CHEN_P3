@@ -97,7 +97,7 @@ uint32_t HAL_GetTick (void) {
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
-static void Error_Handler(void);
+//void Error_Handler(void);			// Ahora está en el main.h
 
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -260,7 +260,7 @@ static void SystemClock_Config(void)
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+void Error_Handler(void)
 {
   /* User may add here some code to deal with this error */
   while(1)

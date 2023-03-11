@@ -6,6 +6,7 @@
 	#include "stdint.h"
 	#include "stdio.h"
 	#include "cmsis_os2.h"
+	#include "main.h"
 	
 	#define RTC_ASYNCH_PREDIV 127
 	#define RTC_SYNCH_PREDIV 255

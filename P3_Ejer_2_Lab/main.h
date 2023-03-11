@@ -47,6 +47,10 @@
 #include "cmsis_os2.h"                  // ::CMSIS:RTOS2
 #endif
 
+
+void Error_Handler(void);
+
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 extern uint64_t app_main_stk[];
