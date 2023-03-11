@@ -139,6 +139,9 @@ int main(void)
 	Init_Parpadeo();
 	Init_ThSNTP();
 	Init_ThLowPower();
+	Init_LowPower_Parpadeo();
+	
+	
 	
   /* Start thread execution */
   osKernelStart();

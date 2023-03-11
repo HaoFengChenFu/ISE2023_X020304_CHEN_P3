@@ -12,5 +12,5 @@
 	#define RTC_SYNCH_PREDIV 255
 	
 	int Init_ThLowPower(void);
-		
+	int Init_LowPower_Parpadeo(void);
 #endif

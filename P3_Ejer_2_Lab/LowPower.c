@@ -4,12 +4,15 @@
 			id del Thread
 ****************************************/
 osThreadId_t tid_ThLowPower;  
+osThreadId_t tid_ThLowPower_Parpadeo;
 
 RTC_HandleTypeDef RTCHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 static void SYSCLKConfig_STOP(void);
 void LowPower_Thread (void *argument); 
+void LowPower_ParpadeoThread (void *argument);                   // thread function
+
 
 /**
   * @brief  This function configures the system to enter Sleep mode for
@@ -127,6 +130,9 @@ static void SYSCLKConfig_STOP(void)
   }
 }
 
+/**************************************************************************************
+			Init modo de bajo consumo
+***************************************************************************************/
 int Init_ThLowPower(void) {
   tid_ThLowPower = osThreadNew(LowPower_Thread, NULL, NULL);
   if (tid_ThLowPower == NULL) {
@@ -143,13 +149,37 @@ void LowPower_Thread(void *argument)
 {
 	osDelay(15000);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_SET);
+	osThreadFlagsSet(tid_ThLowPower_Parpadeo, 1);
 	SleepMode_Measure();
 	
 	while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == 0){
-		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-		osDelay(100);
+
 	}
-	
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, GPIO_PIN_RESET);
+}
+
+/**************************************************************************************
+			Init parpadeo leds en modo de bajo consumo
+***************************************************************************************/
+int Init_LowPower_Parpadeo (void) {
+ 
+  tid_ThLowPower_Parpadeo = osThreadNew(LowPower_ParpadeoThread, NULL, NULL);
+  if (tid_ThLowPower_Parpadeo == NULL) {
+    return(-1);
+  }
+ 
+  return(0);
+}
+ 
+void LowPower_ParpadeoThread (void *argument) {
+ 
+  while (1) {
+		osThreadFlagsWait(1, osFlagsWaitAny, osWaitForever);	
+		while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == 0){
+			HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+			osDelay(100);	
+		}
+		osThreadYield();
+  }
 }
