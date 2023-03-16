@@ -66,8 +66,17 @@ void getLocalTime(uint32_t seconds)
 	
 	// Añadido    A lo mejor hay que pasarlo a (uint8_t)		**************************************************************
 	Set_RTC_Time(ts.tm_hour+1, ts.tm_min, ts.tm_sec);				// Hora + 1 porque el que devuelve está retrasado 1 hora
-	Set_RTC_Date(ts.tm_year-100, ts.tm_mon, ts.tm_wday, ts.tm_yday-18);
+	Set_RTC_Date(ts.tm_year-100, ts.tm_mon+1, ts.tm_wday, ts.tm_yday-18);
 	
+	
+	
+	// A lo mejor por las lineas de antes esto ya no hace falta porque se ha configurado los datos en el rtc
+	//strftime(buf, sizeof(buf), "Date %Y-%m-%d\n", &ts);
+	//LCD_symbolToLocalBuffer_L1(buf, strlen(buf));
+	
+	//strftime(buf, sizeof(buf), "Time %H:%M:%S %Z\n", &ts);
+	//LCD_symbolToLocalBuffer_L2(buf, strlen(buf));
+  //printf("%s\n", buf);
 }
 
 // Iniciacion del thread ***********************************************************************************************************************************
@@ -118,5 +127,17 @@ void STNP_Thread(void *argument)
 		osDelay(5000);
 		get_SNTP_Time();
 	}
+	
+	
+	// Intento con un timer virtual, acaba en el bucle de osRTXError
+	
+//	Init_timer_SNTP();		// Iniciamos el timer virtual aqui para que no haya errores
+//	status = osTimerStart(timer_SNTP, 10000);		// Esperamos 3 minutos (180000)
+//	
+//  while (1) {
+//		status = osTimerStart(timer_SNTP, 5000);		// Esperamos 3 minutos
+//		osThreadFlagsWait(1, osFlagsWaitAny, osWaitForever);
+//  }
+	
 	
 }

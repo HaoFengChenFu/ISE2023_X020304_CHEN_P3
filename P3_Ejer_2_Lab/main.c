@@ -97,7 +97,7 @@ uint32_t HAL_GetTick (void) {
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 static void SystemClock_Config(void);
-//void Error_Handler(void);			// Ahora está en el main.h
+static void Error_Handler(void);
 
 /* Private functions ---------------------------------------------------------*/
 /**
@@ -138,9 +138,6 @@ int main(void)
 	osThreadNew(rtc_app, NULL, NULL);
 	Init_Parpadeo();
 	Init_ThSNTP();
-	Init_ThLowPower();
-	Init_LowPower_Parpadeo();
-	
 	
 	
   /* Start thread execution */
@@ -164,9 +161,10 @@ void rtc_app (void *arg) {
 	RTC_Init();
 	
 	Init_Joystick();
-  
-  osDelay(5000);
-  get_SNTP_Time();
+  Init_ThLowPower();
+	Init_LowPower_Parpadeo();
+//  osDelay(5000);
+//  get_SNTP_Time();
   
   while(1) {
 		Display_Date_Time();
@@ -263,7 +261,7 @@ static void SystemClock_Config(void)
   * @param  None
   * @retval None
   */
-void Error_Handler(void)
+static void Error_Handler(void)
 {
   /* User may add here some code to deal with this error */
   while(1)
