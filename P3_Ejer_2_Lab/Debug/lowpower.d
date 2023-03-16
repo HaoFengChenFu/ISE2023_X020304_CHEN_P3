@@ -42,3 +42,17 @@
 .\debug\lowpower.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\debug\lowpower.o: C:\Users\fengc\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\RTOS2\Include\cmsis_os2.h
 .\debug\lowpower.o: main.h
+.\debug\lowpower.o: joystick.h
+.\debug\lowpower.o: joystick.h
+.\debug\lowpower.o: rtc.h
+.\debug\lowpower.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\debug\lowpower.o: Parpadeo.h
+.\debug\lowpower.o: lcd.h
+.\debug\lowpower.o: SNTP.h
+.\debug\lowpower.o: C:\Users\fengc\AppData\Local\Arm\Packs\Keil\MDK-Middleware\7.13.0\Network\Include\rl_net.h
+.\debug\lowpower.o: C:\Users\fengc\AppData\Local\Arm\Packs\Keil\MDK-Middleware\7.13.0\Network\Include\rl_net_ds.h
+.\debug\lowpower.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\debug\lowpower.o: lcd.h
+.\debug\lowpower.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+.\debug\lowpower.o: rtc.h
+.\debug\lowpower.o: leds.h

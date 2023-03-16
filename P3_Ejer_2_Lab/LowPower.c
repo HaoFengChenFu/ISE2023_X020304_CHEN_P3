@@ -1,4 +1,5 @@
 #include "LowPower.h"
+#include "leds.h"
 
 /****************************************
 			id del Thread
@@ -9,7 +10,7 @@ osThreadId_t tid_ThLowPower_Parpadeo;
 RTC_HandleTypeDef RTCHandle;
 
 /* Private function prototypes -----------------------------------------------*/
-static void SYSCLKConfig_STOP(void);
+//static void SYSCLKConfig_STOP(void);
 void LowPower_Thread (void *argument); 
 void LowPower_ParpadeoThread (void *argument);                   // thread function
 
@@ -82,6 +83,10 @@ void SleepMode_Measure(void)
   __HAL_RCC_GPIOJ_CLK_DISABLE();
   __HAL_RCC_GPIOK_CLK_DISABLE();
 
+
+	LED_Init();
+	PushButtonPins_Init();
+
   /* Configure user Button */
   //BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_EXTI);
 
@@ -97,38 +102,39 @@ void SleepMode_Measure(void)
   
   /* Exit Ethernet Phy from LowPower mode */
   //ETH_PhyExitFromPowerDownMode();
+	
 }
 
-static void SYSCLKConfig_STOP(void)
-{
-  RCC_ClkInitTypeDef RCC_ClkInitStruct;
-  RCC_OscInitTypeDef RCC_OscInitStruct;
-  uint32_t pFLatency = 0;
-  
-  /* Get the Oscillators configuration according to the internal RCC registers */
-  HAL_RCC_GetOscConfig(&RCC_OscInitStruct);
-  
-  /* After wake-up from STOP reconfigure the system clock: Enable HSE and PLL */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();				// Mirar de que fichero de cabecera es
-  }
+//static void SYSCLKConfig_STOP(void)
+//{
+//  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+//  RCC_OscInitTypeDef RCC_OscInitStruct;
+//  uint32_t pFLatency = 0;
+//  
+//  /* Get the Oscillators configuration according to the internal RCC registers */
+//  HAL_RCC_GetOscConfig(&RCC_OscInitStruct);
+//  
+//  /* After wake-up from STOP reconfigure the system clock: Enable HSE and PLL */
+//  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+//  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+//  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+//  if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+//  {
+//    Error_Handler();				// Mirar de que fichero de cabecera es
+//  }
 
-  /* Get the Clocks configuration according to the internal RCC registers */
-  HAL_RCC_GetClockConfig(&RCC_ClkInitStruct, &pFLatency);
-  
-  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
-     clocks dividers */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, pFLatency) != HAL_OK)
-  {
-    Error_Handler();
-  }
-}
+//  /* Get the Clocks configuration according to the internal RCC registers */
+//  HAL_RCC_GetClockConfig(&RCC_ClkInitStruct, &pFLatency);
+//  
+//  /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
+//     clocks dividers */
+//  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK;
+//  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+//  if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, pFLatency) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
+//}
 
 /**************************************************************************************
 			Init modo de bajo consumo
@@ -143,7 +149,7 @@ int Init_ThLowPower(void) {
 }
 
 /**************************************************************************************
-			Thread donde se pone el timer virtual para que se lance cada 3 minutos
+
 ***************************************************************************************/
 void LowPower_Thread(void *argument) 
 {
@@ -175,11 +181,8 @@ int Init_LowPower_Parpadeo (void) {
 void LowPower_ParpadeoThread (void *argument) {
  
   while (1) {
-		osThreadFlagsWait(1, osFlagsWaitAny, osWaitForever);	
-		while(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == 0){
-			HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-			osDelay(100);	
-		}
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+		osDelay(100);	
 		osThreadYield();
   }
 }

@@ -8,5 +8,6 @@
 
   int Init_Joystick (void);
   int Init_timer (void);
-
+	void PushButtonPins_Init (void);
+	
 #endif

@@ -31,7 +31,15 @@ int Init_Joystick (void) {
   if (tid_Thjoy == NULL) {
     return(-1);
   }
-  // Configuracion del joystick
+	PushButtonPins_Init();
+  
+  return(0);
+}
+
+void PushButtonPins_Init (void)
+{
+	  GPIO_InitTypeDef GPIO_InitStruct;
+  // Configuracion del joystick y el pulsador
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -50,8 +58,6 @@ int Init_Joystick (void) {
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);                          //Puertos C
   
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
-  
-  return(0);
 }
 
 /*------------------------------------------------------------------
